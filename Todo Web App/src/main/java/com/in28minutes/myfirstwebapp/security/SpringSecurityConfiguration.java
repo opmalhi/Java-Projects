@@ -1,14 +1,20 @@
 package com.in28minutes.myfirstwebapp.security;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
+import java.util.function.Function;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
-import java.util.function.Function;
 
 @Configuration
 public class SpringSecurityConfiguration {
@@ -40,5 +46,29 @@ public class SpringSecurityConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    // By default, there are two things configured
+    // 1. All URLs are protected
+    // 2. A login form is shown for unauthorized requests
+
+    // To access H2 Console we need to disable CSRF(Cross Site Request Forgery)
+    // H2 sites use of Frames and spring security by default does not allow it.
+
+    // when we override SecurityFilterChain, we need to define entire chain again!
+    // SecurityFilterChain: Defines a filter chain matched against every request
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(
+                auth -> auth.anyRequest().authenticated());
+        http.formLogin(withDefaults());
+
+        http.csrf((csrf) -> csrf.disable());
+        http.headers(
+                (headers) ->
+                        headers.frameOptions((frameOptions) -> frameOptions.disable())
+                );
+
+        return http.build();
     }
 }

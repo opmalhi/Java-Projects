@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+// This service is for when we don't use Spring Jpa and need to define methods to perform functionality
 @Service
 public class ToDoService {
 
