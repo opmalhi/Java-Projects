@@ -5,6 +5,17 @@ To login use
 2. password: test
 
 ## H2 In Memory Database
+- Uncomment the h2 dependency in pom.xml
+### /pom.xml Modified
+
+```
+<dependency>
+	<groupId>com.h2database</groupId>
+	<artifactId>h2</artifactId>
+	<scope>runtime</scope>
+</dependency>
+```
+  
 - To use H2 database modify application.properties
 
 ### /src/main/resources/application.properties Modified
@@ -35,10 +46,12 @@ docker run --detach --env MYSQL_ROOT_PASSWORD=dummypassword --env MYSQL_USER=tod
 
 ```
 <dependency>
-    <groupId>com.mysql</groupId>
-	<artifactId>mysql-connector-j</artifactId>
+    	<groupId>com.mysql</groupId>
+	<artifactId>mysql-connector-java</artifactId>
 </dependency>
 ```
+
+- and comment h2 dependency in pom.xml 
 
 ### /src/main/resources/application.properties Modified
 
@@ -49,4 +62,20 @@ spring.datasource.username=todos-user
 spring.datasource.password=dummytodos
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
 spring.jpa.hibernate.ddl-auto=update
+```
+
+mysqlsh commands
+```
+mysqlsh
+\connect todos-user@localhost:3306
+\sql
+use todos
+select * from todo;
+\quit
+```
+
+Docker Commands
+```
+docker container ls
+docker container stop ID
 ```
