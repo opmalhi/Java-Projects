@@ -24,6 +24,10 @@ public class User {
     @JsonProperty("birth_date")
     private LocalDate birthDate;
 
+    protected User(){
+
+    }
+
     public User(int id, String name, LocalDate birthDate) {
         this.id = id;
         this.name = name;

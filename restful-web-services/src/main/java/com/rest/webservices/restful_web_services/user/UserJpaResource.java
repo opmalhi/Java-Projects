@@ -1,7 +1,6 @@
 package com.rest.webservices.restful_web_services.user;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
-
+import com.rest.webservices.restful_web_services.jpa.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -11,46 +10,55 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-public class UserResource {
+public class UserJpaResource {
 
-    private UserDaoService service;
+    private UserRepository repository;
 
-    public UserResource (UserDaoService service) {
-        this.service = service;
+    public UserJpaResource(UserRepository repository) {
+        this.repository = repository;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/jpa/users")
     public List<User> retrieveAllUsers() {
-        return service.findAll();
+        return repository.findAll();
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/jpa/users/{id}")
     public EntityModel<User> retrieveUser(@PathVariable int id) {
-        User user = service.findOne(id);
+        Optional<User> user = repository.findById(id);
 
-        if(user == null)
+        if(user.isEmpty())
             throw new UserNotFoundException("id:"+id);
 
-        EntityModel<User> entityModel = EntityModel.of(user);
+        //Implementing HATEOAS we need EntityModel and WebMvcLinkBuilder
 
+        // EntityModel wrap a domain object and adding links to it.
+        EntityModel<User> entityModel = EntityModel.of(user.get());
+
+        // To create and add links to EntityModel and name reference to a link
         WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveAllUsers());
         entityModel.add(link.withRel("all-users"));
 
         return entityModel;
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/jpa/users/{id}")
     public void deleteUser(@PathVariable int id) {
-        service.deleteById(id);
+        repository.deleteById(id);
     }
 
-    @PostMapping("/users")
+    @PostMapping("/jpa/users")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 
-        User savedUser = service.save(user);
+        User savedUser = repository.save(user);
 
+        //Here we are creating URI to send created user info
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
