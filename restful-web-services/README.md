@@ -1,50 +1,69 @@
 ## RestFul Web Service with Spring Boot
 
-To run this application with Java H2 Database  
+To run this application with docker MySQL check Docker section else run with Java H2 Database section 
+
+## Docker
+
+### Installation
+- [Docker](https://docs.docker.com/engine/install/)
+- [Mysqlsh](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html)
+
+Launch MySQL using Docker
+```
+docker run --detach --env MYSQL_ROOT_PASSWORD=dummypassword --env MYSQL_USER=web-service --env MYSQL_PASSWORD=dummypassword --env MYSQL_DATABASE=web-services-database --name mysql --publish 3306:3306 mysql:8-oracle
+```
+
+
+mysqlsh commands 
+```
+mysqlsh
+\connect social-media-user@localhost:3306
+\sql
+use web-services-database
+select * from user_details;
+select * from post;
+\quit
+```
+
+Docker Commands
+```
+docker container ls
+docker container stop ID
+```
+
 
 ## Java H2 Database
 
+### /pom.xml Modified
+- Uncomment h2database dependency and comment mysql dependency
+
+```
+<dependency>
+    <groupId>com.h2database</groupId>
+	<artifactId>h2</artifactId>
+	<scope>runtime</scope>
+</dependency> 
+
+
+<!-- <dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>8.0.12</version>
+	</dependency> -->
+```
+
 ### /src/main/resources/application.properties Modified
-- instead of dynamic jdbc url we have defined static jdbc url in application.properties file
 
+- uncomment below line
 ```
-logging.level.org.springframework=info
-
-#spring actuator to monitor and manage application in production
-management.endpoints.web.exposure.include=*
-
-#if you don't see the h2 console (http://localhost:8080/h2-console) uncomment below line
-#spring.h2.console.enabled=true
 spring.datasource.url=jdbc:h2:mem:testdb
-spring.jpa.defer-datasource-initialization=true
-
-#To check which sql queries are triggered uncomment below line
-#spring.jpa.show-sql=true
 ```
 
-### /src/main/resources/data.sql Modified 
-
-- insert data in h2 database
-
+- comment below lines in application.properties
 ```
-insert into user_details(id, birth_date, name)
-values(10001, current_date(), 'Adam');
-
-insert into user_details(id, birth_date, name)
-values(10002, current_date(), 'John');
-
-insert into user_details(id, birth_date, name)
-values(10003, current_date(), 'Alex');
-
-insert into post(id, description, user_id)
-values(20001, 'I want to learn AWS', 10001);
-
-insert into post(id, description, user_id)
-values(20002, 'I want to learn DevOps', 10001);
-
-insert into post(id, description, user_id)
-values(20003, 'I want to Get AWS Certified', 10002);
-
-insert into post(id, description, user_id)
-values(20004, 'I want to learn Multi Cloud', 10002);
+#spring.datasource.url=jdbc:mysql://localhost:3306/web-services-database
+#spring.datasource.username=web-service
+#spring.datasource.password=dummypassword
+#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+#spring.jpa.hibernate.ddl-auto=update
 ```
