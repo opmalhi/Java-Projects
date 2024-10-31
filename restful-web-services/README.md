@@ -1,6 +1,7 @@
 ## RestFul Web Service with Spring Boot
 
 To run this application with docker MySQL check Docker section else run with Java H2 Database section 
+- user credentials are in application.properties
 
 ## Docker
 
