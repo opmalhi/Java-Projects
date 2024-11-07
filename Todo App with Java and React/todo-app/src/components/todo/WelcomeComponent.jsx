@@ -20,7 +20,7 @@ const WelcomeComponent = () => {
         //     .catch((error) => errorResponse(error))
         //     .finally(() => console.log("clean up"))
 
-        retrieveHelloWorldPathVariable("XYZ")
+        retrieveHelloWorldPathVariable("John")
             .then((response) => successfulResponse(response))
             .catch((error) => errorResponse(error))
             .finally(() => console.log("clean up"))

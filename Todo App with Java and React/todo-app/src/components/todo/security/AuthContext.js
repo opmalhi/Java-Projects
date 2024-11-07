@@ -12,7 +12,7 @@ const AuthProvider = ({ children }) => {
     const [isAuthenticated, setAuthenticated] = useState(false)
 
     const login = (username, password) => {
-        if(username === 'username' && password === 'dummy'){
+        if(username === 'john' && password === 'dummy'){
             setAuthenticated(true)
             return true
         } else {

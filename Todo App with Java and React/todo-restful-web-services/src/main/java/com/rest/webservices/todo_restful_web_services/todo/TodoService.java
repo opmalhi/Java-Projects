@@ -15,12 +15,12 @@ public class TodoService {
     private static int todosCount = 0;
 
     static {
-        todos.add(new Todo(++todosCount, "in28minutes","Get AWS Certified",
-                LocalDate.now().plusYears(10), false ));
-        todos.add(new Todo(++todosCount, "in28minutes","Learn DevOps",
-                LocalDate.now().plusYears(11), false ));
-        todos.add(new Todo(++todosCount, "in28minutes","Learn Full Stack Development",
-                LocalDate.now().plusYears(12), false ));
+        todos.add(new Todo(++todosCount, "john","Get AWS Certified",
+                LocalDate.now().plusYears(1), false ));
+        todos.add(new Todo(++todosCount, "john","Learn DevOps",
+                LocalDate.now().plusYears(1).plusMonths(2), false ));
+        todos.add(new Todo(++todosCount, "john","Learn Full Stack Development",
+                LocalDate.now().plusYears(1).plusMonths(4), false ));
     }
 
     public List<Todo> findByUsername(String username){

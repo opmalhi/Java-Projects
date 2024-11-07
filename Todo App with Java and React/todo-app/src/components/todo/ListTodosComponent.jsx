@@ -1,14 +1,35 @@
+import { useEffect, useState } from "react"
+import { retrieveAllTodosForUsername } from "./api/TodoApiService"
+
 const ListTodosComponent = () => {
 
-    const today = new Date()
+    // static todos 
+    // const today = new Date()
+    // const targetDate = new Date(today.getFullYear()+1, today.getMonth(), today.getDay())
+    // const todos = [
+    //                 {id: 1, description: 'Learn AWS', done: false, targetDate: targetDate},
+    //                 {id: 2, description: 'Learn Full Stack Dev', done: false, targetDate: targetDate},
+    //                 {id: 3, description: 'Learn DevOps', done: false, targetDate: targetDate},
+    //             ]
 
-    const targetDate = new Date(today.getFullYear()+1, today.getMonth(), today.getDay())
+    const [todos, setTodos] = useState([])
 
-    const todos = [
-                    {id: 1, description: 'Learn AWS', done: false, targetDate: targetDate},
-                    {id: 2, description: 'Learn Full Stack Dev', done: false, targetDate: targetDate},
-                    {id: 3, description: 'Learn DevOps', done: false, targetDate: targetDate},
-                ]
+    //useEffect - tell React that your component needs to do something after render.
+    useEffect(
+        () => refreshTodos(), []
+    )
+
+    const refreshTodos = () => {
+        retrieveAllTodosForUsername('john')
+            .then( 
+                (response) => {
+                    setTodos(response.data)
+                }
+            )
+            .catch ((error) => console.log(error))
+
+    }
+
 
     return (
         <div className="container">
@@ -31,7 +52,7 @@ const ListTodosComponent = () => {
                                         <td>{todo.id}</td>
                                         <td>{todo.description}</td>
                                         <td>{todo.done.toString()}</td>
-                                        <td>{todo.targetDate.toDateString()}</td>
+                                        <td>{todo.targetDate.toString()}</td>
                                     </tr>
                                 )
                             )
