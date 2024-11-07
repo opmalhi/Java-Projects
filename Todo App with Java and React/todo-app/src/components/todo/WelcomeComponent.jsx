@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom"
-import axios from "axios"
 import { useState } from "react"
+import { retrieveHelloWorldPathVariable } from "./api/HelloWorldApiService"
 
 const WelcomeComponent = () => {
 
@@ -8,9 +8,19 @@ const WelcomeComponent = () => {
 
     const [message, setMessage] = useState(null)
 
-    const callHelloWorldRestApi = async () => {
+    const callHelloWorldRestApi = () => {
 
-        await axios.get('http://localhost:8080/hello-world-bean')
+        // retrieveHelloWorld()
+        //     .then((response) => successfulResponse(response))
+        //     .catch((error) => errorResponse(error))
+        //     .finally(() => console.log("clean up"))
+
+        // retrieveHelloWorldBean()
+        //     .then((response) => successfulResponse(response))
+        //     .catch((error) => errorResponse(error))
+        //     .finally(() => console.log("clean up"))
+
+        retrieveHelloWorldPathVariable("XYZ")
             .then((response) => successfulResponse(response))
             .catch((error) => errorResponse(error))
             .finally(() => console.log("clean up"))
@@ -19,7 +29,9 @@ const WelcomeComponent = () => {
 
     const successfulResponse = (response) => {
         console.log(response)
-        setMessage(response.data.message)
+        
+        // setMessage(response.data) // for retrieveHelloWorld() api
+        setMessage(response.data.message) // for retrieveHelloWorldBean() and retrieveHelloWorldPathVariable() api's
     }
 
     const errorResponse = (error) => {
