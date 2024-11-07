@@ -11,3 +11,7 @@ export const retrieveAllTodosForUsernameApi = async (username) => {
 export const deleteTodoApi = async (username, id) => {
     return await apiClient.delete(`/users/${username}/todos/${id}`)
 }
+
+export const retrieveTodoApi = async (username, id) => {
+    return await apiClient.get(`/users/${username}/todos/${id}`)
+}

@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import HeaderComponent from "./HeaderComponent"
 import FooterComponent from "./FooterComponent"
 import ListTodosComponent from "./ListTodosComponent"
+import TodoComponent from "./TodoComponent"
 import WelcomeComponent from "./WelcomeComponent"
 import ErrorComponent from "./ErrorComponent"
 import LoginComponent from "./LoginComponent"
@@ -37,6 +38,11 @@ const TodoApp = () => {
                         <Route path="/todos" element={
                             <AuthenticatedRoute>
                                 <ListTodosComponent />
+                            </AuthenticatedRoute>
+                        } />
+                        <Route path="/todo/:id" element={
+                            <AuthenticatedRoute>
+                                <TodoComponent />
                             </AuthenticatedRoute>
                         } />
                         <Route path="/logout" element={
