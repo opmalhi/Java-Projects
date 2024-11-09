@@ -17,11 +17,3 @@ export const retrieveHelloWorldPathVariable = async (username, token) => {
     // }
     )
 }
-
-export const executeBasicAuthenticationService = async (token) => {
-    return await apiClient.get(`/basicauth`, {
-        headers: {
-            Authorization: token
-        }
-    })
-}
