@@ -2,6 +2,7 @@ package com.rest.webservices.todo_restful_web_services.basic;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,11 +18,17 @@ public class BasicAuthenticationSecurityConfiguration {
     //we have stateless rest api, so we will disable csrf
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        //1: Response to preflight request doesn't pass access control check
+        // (HttpMethod.OPTIONS, "/**") we enabled preflight request
 
+        //2: basic auth
+        // we create test url for basic authentication
         return
                 http
                     .authorizeHttpRequests(
-                        auth -> auth.anyRequest().authenticated()
+                        auth -> auth
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                .anyRequest().authenticated()
                     )
                     .httpBasic(Customizer.withDefaults())
                     .sessionManagement(

@@ -13,5 +13,9 @@ export const retrieveHelloWorldBean = async () => {
 }
 
 export const retrieveHelloWorldPathVariable = async (username) => {
-    return await apiClient.get(`/hello-world/path-variable/${username}`)
+    return await apiClient.get(`/hello-world/path-variable/${username}`, {
+        headers: {
+            Authorization: 'Basic am9objpkdW1teQ=='
+        }
+    })
 }

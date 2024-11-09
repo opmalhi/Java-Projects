@@ -28,7 +28,7 @@ const WelcomeComponent = () => {
     }
 
     const successfulResponse = (response) => {
-        console.log(response)
+        // console.log(response)
         
         // setMessage(response.data) // for retrieveHelloWorld() api
         setMessage(response.data.message) // for retrieveHelloWorldBean() and retrieveHelloWorldPathVariable() api's
