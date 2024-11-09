@@ -1,8 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { retrieveTodoApi, updateTodoApi } from "./api/TodoApiService"
+import { createTodoApi, retrieveTodoApi, updateTodoApi } from "./api/TodoApiService"
 import { useAuth } from "./security/AuthContext"
 import { useEffect, useState } from "react"
 import { Formik, Form, Field, ErrorMessage } from "formik"
+import moment from "moment"
 
 const TodoComponent = () => {
 
@@ -22,7 +23,8 @@ const TodoComponent = () => {
     )
 
     const retrieveTodo = () => {
-        retrieveTodoApi(username, id)
+        if(id != -1){
+            retrieveTodoApi(username, id)
             .then(
                 response => {
                     setDescription(response.data.description)
@@ -30,6 +32,7 @@ const TodoComponent = () => {
                 }
             )
             .catch((error) => console.log(error))
+        }
     }
 
     const onSubmit = (values) => {
@@ -40,13 +43,24 @@ const TodoComponent = () => {
             targetDate: values.targetDate,
             done: false
         }
+        
+        if(id == -1){
 
-        // console.log(todo)
-        updateTodoApi(username, id, todo)
+            createTodoApi(username, todo)
             .then( response => {
                 navigate('/todos')
             })
             .catch(error => console.log(error))
+        
+        }else{
+        
+            updateTodoApi(username, id, todo)
+            .then( response => {
+                navigate('/todos')
+            })
+            .catch(error => console.log(error))
+        
+        }
     }
     
     const validate = (values) => {
@@ -59,7 +73,7 @@ const TodoComponent = () => {
             errors.description = 'Enter at least 5 characters'
         }
         
-        if(values.targetDate == null){
+        if(values.targetDate == null || values.targetDate == '' || moment(values.targetDate).isValid()){
             errors.targetDate = 'Enter a target date'
         }
 
@@ -99,7 +113,7 @@ const TodoComponent = () => {
                                     />
                                 </fieldset>
                                 <div>
-                                    <button className="btn btn-success float-end px-4 my-3" type="submit">Update</button>
+                                    <button className="btn btn-outline-success float-end px-4 my-3" type="submit">Save</button>
                                 </div>
                             </Form>
                         )

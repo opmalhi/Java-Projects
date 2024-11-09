@@ -19,3 +19,7 @@ export const retrieveTodoApi = async (username, id) => {
 export const updateTodoApi = async (username, id, todo) => {
     return await apiClient.put(`/users/${username}/todos/${id}`, todo)
 }
+
+export const createTodoApi = async (username, todo) => {
+    return await apiClient.post(`/users/${username}/todos`, todo)
+}

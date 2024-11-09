@@ -7,6 +7,8 @@ import java.util.List;
 
 @RestController
 public class TodoResource {
+    //Logging library
+//    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private TodoService todoService;
 
@@ -44,6 +46,8 @@ public class TodoResource {
                            @RequestBody Todo todo){
         Todo createdTodo = todoService.addTodo(username, todo.getDescription(),
                 todo.getTargetDate(), todo.isDone());
+//        logger.info(String.valueOf(todo));
+//        logger.info(String.valueOf("created todo: "+createdTodo));
         return createdTodo;
     }
 }

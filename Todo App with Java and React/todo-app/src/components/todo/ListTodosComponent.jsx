@@ -46,6 +46,10 @@ const ListTodosComponent = () => {
     const updateTodo = (id) => {
         navigate(`/todo/${id}`)
     }
+    
+    const addNewTodo = () => {
+        navigate(`/todo/-1`)
+    }
 
     return (
         <div className="container">
@@ -54,6 +58,11 @@ const ListTodosComponent = () => {
             { message && <div className="alert alert-success w-50 m-auto p-2">{message}</div> }
             
             <div>
+                <div className="container my-3">
+                    <button className="btn btn-outline-primary float-end" onClick={addNewTodo}>
+                        Add New Todo
+                    </button>
+                </div>
                 <table className="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -74,9 +83,9 @@ const ListTodosComponent = () => {
                                         <td>{todo.done.toString()}</td>
                                         <td>{todo.targetDate.toString()}</td>
                                         <td>
-                                            <button className="btn btn-primary mx-4" 
+                                            <button className="btn btn-outline-warning mx-4" 
                                                 onClick={() => updateTodo(todo.id)}>Update</button>
-                                            <button className="btn btn-danger" 
+                                            <button className="btn btn-outline-danger" 
                                                 onClick={() => deleteTodo(todo.id)}>Delete</button>
                                         </td>
                                     </tr>
