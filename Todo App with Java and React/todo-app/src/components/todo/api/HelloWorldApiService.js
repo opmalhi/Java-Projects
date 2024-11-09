@@ -12,10 +12,18 @@ export const retrieveHelloWorldBean = async () => {
     return await apiClient.get('/hello-world-bean')
 }
 
-export const retrieveHelloWorldPathVariable = async (username) => {
+export const retrieveHelloWorldPathVariable = async (username, token) => {
     return await apiClient.get(`/hello-world/path-variable/${username}`, {
         headers: {
-            Authorization: 'Basic am9objpkdW1teQ=='
+            Authorization: token
+        }
+    })
+}
+
+export const executeBasicAuthenticationService = async (token) => {
+    return await apiClient.get(`/basicauth`, {
+        headers: {
+            Authorization: token
         }
     })
 }
