@@ -7,3 +7,7 @@ export const executeBasicAuthenticationService = async (token) => {
         }
     })
 }
+
+export const executeJwtAuthenticationService = async (username, password) => {
+    return await apiClient.post(`/authenticate`, {username, password})
+}
